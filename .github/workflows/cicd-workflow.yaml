@@ -23,7 +23,6 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        working-directory: npm install
         run: npm ci
 
       - name: Deploy
