@@ -27,6 +27,8 @@ jobs:
 
       - name: Setup AWS CLI
         uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: us-west-2
       
       # - name: Print changed files # To properly debug what is being deployed (It can be removed).
       #   run: |
