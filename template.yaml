@@ -1,30 +1,35 @@
-AWSTemplateFormatVersion: "2010-09-09"
-Resources:
-  RootRole:
-    Type: 'AWS::IAM::Role'
+AWSTemplateFormatVersion: 2010-09-09
+Transform: 'AWS::Serverless-2016-10-31'
+Description: 'Example Lambda zip copy'
+Resources:  
+  BackEndFunctionRole:
+          Type: AWS::IAM::Role
+          Properties:
+            AssumeRolePolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Principal:
+                    Service: lambda.amazonaws.com
+                  Action: sts:AssumeRole
+            ManagedPolicyArns:
+                - arn:aws:iam::aws:policy/service role/AWSLambdaBasicExecutionRole
+
+  BackendFunctionS3Bucker:
+    Type: AWS::S3::Bucket
+
+  BackEndFunction:
+    Type: AWS::Lambda::Function
     Properties:
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - lambda.amazonaws.com
-            Action:
-              - 'sts:AssumeRole'
-      Path: /
-      Policies:
-        - PolicyName: root
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action: '*'
-                Resource: '*'
-  RootInstanceProfile:
-    Type: 'AWS::IAM::InstanceProfile'
-    Properties:
-      Path: /
-      Roles:
-        - !Ref RootRole
+      Architectures:
+      - arm64
+      Code: 
+        S3Bucket: !Ref BackendFunctionS3Bucker # S3 bucket where code is stored
+        S3Key: backend-function-zip.zip # S3 key (object name) of your zipped code
+      FunctionName: back-end-function
+      Handler: handler
+      MemorySize: 128
+      Role: !Ref BackEndFunctionRole.Arn
+      Runtime: python3.9
+      Timeout: 15
 
