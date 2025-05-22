@@ -2,18 +2,33 @@ AWSTemplateFormatVersion: 2010-09-09
 Transform: 'AWS::Serverless-2016-10-31'
 Description: 'Example Lambda zip copy'
 Resources:  
-  BackEndFunctionRole:
-          Type: AWS::IAM::Role
-          Properties:
+  lambdaExecutionRole:
+        Type: AWS::IAM::Role
+        Properties:
             AssumeRolePolicyDocument:
-              Version: '2012-10-17'
-              Statement:
-                - Effect: Allow
-                  Principal:
-                    Service: lambda.amazonaws.com
-                  Action: sts:AssumeRole
-            ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/service role/AWSLambdaBasicExecutionRole
+                Version: "2012-10-17"
+                Statement:
+                    - Effect: "Allow"
+                      Principal:
+                          Service:
+                              - lambda.amazonaws.com
+                      Action:
+                          - sts:AssumeRole
+            Path: "/"
+            Policies:
+                - PolicyName: "back-end-function-logs"
+                  PolicyDocument:
+                      Version: "2012-10-17"
+                      Statement:
+                          - Effect: "Allow"
+                            Action:
+                                - "Logs:*"
+                            Resource: "arn:aws:logs:*:*:*"
+  
+  backEndFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: "/aws/lambda/back-end-function-log-group"
 
 
   BackEndFunction:
@@ -27,8 +42,9 @@ Resources:
         S3Key: main.zip
       Handler: ./lambda/main.handler
       MemorySize: 128
-      Role: !GetAtt BackEndFunctionRole.Arn
+      Role: !GetAtt lambdaExecutionRole.Arn
       Runtime: python3.9
       Timeout: 15
     DependsOn:
-      - BackEndFunctionRole
+      - backEndFunctionLogGroup
+      - lambdaExecutionRole
