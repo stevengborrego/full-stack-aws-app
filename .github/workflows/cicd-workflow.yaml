@@ -70,6 +70,7 @@ jobs:
       #     # Cleanup
       #     rm -r lambda_env
       #     rm existing_lambda.zip updated_lambda.zip
+      #edit
 
       - name: Deploy CloudFormation template
         run: aws cloudformation deploy --template-file ./template.yaml --stack-name aws-full-stack-app --capabilities CAPABILITY_IAM
