@@ -72,6 +72,12 @@ jobs:
       #     rm existing_lambda.zip updated_lambda.zip
       #edit
 
+      - name: Create S3 bucket for lambda code
+        run: aws s3 mb s3://back-end-function-bucket --region us-west-2
+
+      # - name: Zip lambda function
+      #   run: zip ./lambda/main.zip ./lambda/main.py
+
       - name: Deploy CloudFormation template
         run: aws cloudformation deploy --template-file ./template.yaml --stack-name aws-full-stack-app --capabilities CAPABILITY_IAM
 
