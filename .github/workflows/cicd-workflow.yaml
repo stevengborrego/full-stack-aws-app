@@ -72,7 +72,7 @@ jobs:
       #     rm existing_lambda.zip updated_lambda.zip
 
       - name: Deploy CloudFormation template
-        run: aws cloudformation deploy --template-file ./template.yaml --stack-name aws-full-stack-app
+        run: aws cloudformation deploy --template-file ./template.yaml --stack-name aws-full-stack-app --capabilities CAPABILITY_IAM
 
       - name: Deploy Amplify app
         run: ./scripts/amplify-deploy.sh dcfdevtko6jp6 main
