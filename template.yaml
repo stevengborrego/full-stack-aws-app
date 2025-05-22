@@ -15,7 +15,7 @@ Resources:
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/service role/AWSLambdaBasicExecutionRole
 
-  BackendFunctionS3Bucker:
+  BackendFunctionS3Bucket:
     Type: AWS::S3::Bucket
 
   BackEndFunction:
@@ -24,12 +24,12 @@ Resources:
       Architectures:
       - arm64
       Code: 
-        S3Bucket: !Ref BackendFunctionS3Bucker # S3 bucket where code is stored
+        S3Bucket: BackendFunctionS3Bucket # S3 bucket where code is stored
         S3Key: backend-function-zip.zip # S3 key (object name) of your zipped code
       FunctionName: back-end-function
       Handler: handler
       MemorySize: 128
-      Role: !Ref BackEndFunctionRole.Arn
+      Role: !GetAtt BackEndFunctionRole.Arn
       Runtime: python3.9
       Timeout: 15
 
