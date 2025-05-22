@@ -19,13 +19,12 @@ Resources:
     Type: AWS::S3::Bucket
 
   BackEndFunction:
-    Type: AWS::Lambda::Function
+    Type: AWS::Serverless::Function
     Properties:
       Architectures:
       - arm64
-      Code: 
-        S3Bucket: BackendFunctionS3Bucket # S3 bucket where code is stored
-        S3Key: backend-function-zip.zip # S3 key (object name) of your zipped code
+      CodeUri:
+        ./lambda/main.py
       FunctionName: back-end-function
       Handler: handler
       MemorySize: 128
