@@ -72,8 +72,8 @@ jobs:
       #     rm existing_lambda.zip updated_lambda.zip
       #edit
 
-      - name: Create S3 bucket for lambda code
-        run: aws s3 mb s3://back-end-function-bucket --region us-west-2
+      # - name: Create S3 bucket for lambda code
+      #   run: aws s3 mb s3://back-end-function-bucket --region us-west-2
 
       # - name: Zip lambda function
       #   run: zip ./lambda/main.zip ./lambda/main.py
